@@ -16,12 +16,14 @@ def create_app(config_class=Config):
     from app.routes.ai_chat import ai_chat_bp
     from app.routes.video_call import video_call_bp
     from app.routes.counselors import counselors_bp
+    from app.routes.auth import auth_bp
 
     app.register_blueprint(booking_bp, url_prefix="/api/booking")
     app.register_blueprint(forum_bp, url_prefix="/api/forum")
     app.register_blueprint(ai_chat_bp, url_prefix="/api/ai")
     app.register_blueprint(video_call_bp, url_prefix="/api/video")
     app.register_blueprint(counselors_bp, url_prefix="/api/counselors")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
 
     @app.route("/health")
     def health():

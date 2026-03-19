@@ -24,7 +24,14 @@ pytest_out*.txt
 test_live.py
 test_health.py
 test_token.py
+test_err.py
 jwt.txt
+
+# Extra logs & temp
+out*.txt
+err_out.txt
+models*.txt
+inject_counselor.py
 
 # IDE
 .vscode/

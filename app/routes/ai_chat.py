@@ -4,7 +4,7 @@ from app.services.ai_service import chat_with_ai, get_chat_history
 ai_chat_bp = Blueprint("ai_chat", __name__)
 
 
-@ai_chat_bp.route("/chat", methods=["POST"])
+@ai_chat_bp.route("/chat/", methods=["POST"])
 def chat():
     """
     Send a message to the AI counselling assistant.
@@ -38,7 +38,7 @@ def chat():
     return jsonify(result), 200
 
 
-@ai_chat_bp.route("/history", methods=["GET"])
+@ai_chat_bp.route("/history/", methods=["GET"])
 def history():
     """
     Return chat history for a session.

@@ -4,7 +4,7 @@ from app.services.supabase_client import get_supabase
 TABLE = "bookings"
 
 
-def create_booking(anonymous_id: str, counselor_id: str, scheduled_at: str, notes: str = ""):
+def create_booking(anonymous_id: str, counselor_id: str, scheduled_at: str, mode: str, notes: str = ""):
     """Insert a new booking row and return (data, error)."""
     supabase = get_supabase()
     try:
@@ -15,6 +15,7 @@ def create_booking(anonymous_id: str, counselor_id: str, scheduled_at: str, note
                     "anonymous_id": anonymous_id,
                     "counselor_id": counselor_id,
                     "scheduled_at": scheduled_at,
+                    "mode": mode,
                     "notes": notes,
                     "status": "pending",
                 }

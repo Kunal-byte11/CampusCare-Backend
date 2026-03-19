@@ -8,20 +8,33 @@ video_call_bp = Blueprint("video_call", __name__)
 
 
 @video_call_bp.route("/token", methods=["GET"])
-@auth_required
 def get_token():
     """
     Generate an Agora RTC token for a channel.
     Query params:
       - channel: str  (channel name)
+      - anonymous_id: str
       - uid: int      (user UID, 0 for auto-assign)
       - role: str     (publisher | subscriber, default publisher)
-    Headers:
-      - Authorization: Bearer <supabase_jwt>
     """
     channel = request.args.get("channel")
-    if not channel:
-        return jsonify({"error": "channel query param required"}), 400
+    anon_id = request.args.get("anonymous_id")
+    
+    if not channel or not anon_id:
+        return jsonify({"error": "channel and anonymous_id query params required"}), 400
+
+    # Verify user exists (either student anonymous_id or counselor_id)
+    supabase = get_supabase()
+    
+    # Check students
+    student_check = supabase.table("anonymous_users").select("anonymous_id").eq("anonymous_id", anon_id).execute()
+    
+    if not student_check.data:
+        # Check counselors
+        counselor_check = supabase.table("counselors").select("id").eq("id", anon_id).execute()
+        if not counselor_check.data:
+            return jsonify({"error": "Invalid user ID (not a student or counselor)"}), 401
+
 
     try:
         uid = int(request.args.get("uid", 0))

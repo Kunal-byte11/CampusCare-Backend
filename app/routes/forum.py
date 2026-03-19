@@ -15,7 +15,7 @@ forum_bp = Blueprint("forum", __name__)
 
 # ── Posts ────────────────────────────────────────────────────────────────────
 
-@forum_bp.route("/posts", methods=["GET"])
+@forum_bp.route("/posts/", methods=["GET"])
 def list_posts():
     """Return paginated forum posts. Query params: ?limit=20&offset=0"""
     limit = int(request.args.get("limit", 20))
@@ -36,7 +36,7 @@ def get_post(post_id):
     return jsonify({"post": post}), 200
 
 
-@forum_bp.route("/posts", methods=["POST"])
+@forum_bp.route("/posts/", methods=["POST"])
 def new_post():
     """
     Create a forum post.
@@ -83,7 +83,7 @@ def remove_post(post_id):
     return jsonify({"message": "Post deleted"}), 200
 
 
-@forum_bp.route("/posts/<post_id>/upvote", methods=["POST"])
+@forum_bp.route("/posts/<post_id>/upvote/", methods=["POST"])
 def upvote(post_id):
     """Increment upvotes for a post by 1. No auth required."""
     result, error = upvote_post(post_id)
@@ -94,7 +94,7 @@ def upvote(post_id):
 
 # ── Comments ──────────────────────────────────────────────────────────────────
 
-@forum_bp.route("/posts/<post_id>/comments", methods=["GET"])
+@forum_bp.route("/posts/<post_id>/comments/", methods=["GET"])
 def list_comments(post_id):
     comments, error = get_comments(post_id)
     if error:
@@ -102,7 +102,7 @@ def list_comments(post_id):
     return jsonify({"comments": comments}), 200
 
 
-@forum_bp.route("/posts/<post_id>/comments", methods=["POST"])
+@forum_bp.route("/posts/<post_id>/comments/", methods=["POST"])
 def add_comment(post_id):
     """Body: { anonymous_id, content }"""
     data = request.get_json(silent=True)

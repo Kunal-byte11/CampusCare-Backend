@@ -23,7 +23,7 @@ def book_session():
     if not data:
         return jsonify({"error": "No JSON body provided"}), 400
 
-    required = ["counselor_id", "scheduled_at", "anonymous_id"]
+    required = ["counselor_id", "scheduled_at", "anonymous_id", "mode"]
     missing = [f for f in required if f not in data]
     if missing:
         return jsonify({"error": f"Missing fields: {missing}"}), 400
@@ -32,6 +32,7 @@ def book_session():
         anonymous_id=data["anonymous_id"],
         counselor_id=data["counselor_id"],
         scheduled_at=data["scheduled_at"],
+        mode=data["mode"],
         notes=data.get("notes", ""),
     )
     if error:
@@ -40,7 +41,7 @@ def book_session():
     return jsonify({"message": "Booking created", "booking": result}), 201
 
 
-@booking_bp.route("/my", methods=["GET"])
+@booking_bp.route("/my/", methods=["GET"])
 def get_my_bookings():
     """
     Get all bookings for a given anonymous_id.
@@ -55,6 +56,23 @@ def get_my_bookings():
         return jsonify({"error": error}), 500
 
     return jsonify({"bookings": result}), 200
+
+
+@booking_bp.route("/counselor/", methods=["GET"])
+def get_counselor_bookings():
+    """Fetch bookings assigned to a specific counselor."""
+    counselor_id = request.args.get("counselor_id")
+    if not counselor_id:
+        return jsonify({"error": "counselor_id required"}), 400
+
+    from app.services.supabase_client import get_supabase
+    supabase = get_supabase()
+    try:
+        res = supabase.table("bookings").select("*").eq("counselor_id", counselor_id).order("scheduled_at", desc=True).execute()
+        return jsonify({"bookings": res.data}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch counselor bookings: {e}"}), 500
+
 
 
 @booking_bp.route("/all", methods=["GET"])
