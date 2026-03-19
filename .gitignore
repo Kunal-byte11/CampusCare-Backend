@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables — NEVER commit this!
+.env
+
+# Pytest / test artifacts
+.pytest_cache/
+pytest_out*.txt
+test_live.py
+test_health.py
+test_token.py
+jwt.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
