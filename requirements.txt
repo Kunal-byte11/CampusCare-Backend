@@ -10,7 +10,7 @@ PyJWT==2.9.0
 
 # AIsupabase>=2.3.4
 google-generativeai
-agora-token-builder==0.8.3
+agora-token-builder>=1.0.0
 
 # Agora video tokens
 # This section now only contains the comment as agora-token-builder was moved.
